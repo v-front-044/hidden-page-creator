@@ -53,37 +53,30 @@ execFileSync(
   ],
   { stdio: "inherit" },
 );
-const bundle = (await readFile(bundlePath, "utf8")).replace(/<\/script/gi, "<\\/script");
-await rm(bundlePath);
-
-// 2. Inline the stylesheet(s).
+// The bundle stays an external classic script: browsers block ES modules over
+// file://, but plain scripts and stylesheets load fine from disk.
 const cssName = indexHtml.match(/href="[^"]*?(assets\/styles-[^"]+\.css)"/)?.[1];
-const css = cssName ? (await readFile(path.join(out, cssName), "utf8")).replace(/<\/style/gi, "<\\/style") : "";
-
-const scriptTag = `<script type="module">${bundle}</script>`;
 
 for (const file of pages) {
   const rel = path.relative(out, file);
   const dir = path.dirname(rel).replace(/\\/g, "/");
   const route = dir === "." ? "/" : `/${dir}`;
+  const prefix = dir === "." ? "./" : "../".repeat(dir.split("/").length);
 
   let html = await readFile(file, "utf8");
 
-  // Drop every external JS reference — the bundle below replaces all of them.
+  // Drop every module reference — the single classic bundle replaces them all.
   html = html
     .replace(/<link[^>]+rel="modulepreload"[^>]*>/g, "")
     .replace(/<script[^>]+src="[^"]*assets\/[^"]+"[^>]*><\/script>/g, "");
 
-  // Inline CSS instead of linking it.
-  if (css) {
+  // Local URLs must be relative so they also resolve from disk.
+  if (cssName) {
     html = html.replace(
-      /<link[^>]+href="[^"]*assets\/styles-[^"]+\.css"[^>]*>/g,
-      `<style>${css}</style>`,
+      /(href=")[^"]*(assets\/styles-[^"]+\.css")/g,
+      `$1${prefix}$2`,
     );
   }
-
-  // Local icon reference must be relative for file:// to resolve it.
-  const prefix = dir === "." ? "./" : "../".repeat(dir.split("/").length);
   html = html.replace(/(href|src)="\/favicon\.ico"/g, `$1="${prefix}favicon.ico"`);
 
   // When opened from disk the router uses hash history — make sure a
@@ -93,7 +86,8 @@ for (const file of pages) {
     `if(!location.hash){history.replaceState(null,"",location.href.split("#")[0]+"#${route}");}})();</script>`;
 
   html = html.replace("</head>", `${bootstrap}</head>`);
-  html = html.replace("</body>", `${scriptTag}</body>`);
+  html = html.replace("</body>", `<script src="${prefix}assets/bundle.js"></script></body>`);
+
 
   await writeFile(file, html);
 }
