@@ -47,7 +47,7 @@ execFileSync(
     "esbuild",
     path.join(out, entryMatch[1]),
     "--bundle",
-    "--format=esm",
+    "--format=iife",
     "--minify",
     `--outfile=${bundlePath}`,
   ],
