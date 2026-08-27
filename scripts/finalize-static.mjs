@@ -53,12 +53,12 @@ execFileSync(
   ],
   { stdio: "inherit" },
 );
-const bundle = await readFile(bundlePath, "utf8");
+const bundle = (await readFile(bundlePath, "utf8")).replace(/<\/script/gi, "<\\/script");
 await rm(bundlePath);
 
 // 2. Inline the stylesheet(s).
 const cssName = indexHtml.match(/href="[^"]*?(assets\/styles-[^"]+\.css)"/)?.[1];
-const css = cssName ? await readFile(path.join(out, cssName), "utf8") : "";
+const css = cssName ? (await readFile(path.join(out, cssName), "utf8")).replace(/<\/style/gi, "<\\/style") : "";
 
 const scriptTag = `<script type="module">${bundle}</script>`;
 
