@@ -28,12 +28,16 @@ export default defineConfig({
     // nitro/vite builds from this. The static export uses the default entry so the
     // prerender preview server can boot it.
     ...(STATIC_EXPORT ? {} : { server: { entry: "server" } }),
-    prerender: {
-      enabled: true,
-      crawlLinks: true,
-    },
-    pages: PAGES.map((path) => ({ path, prerender: { enabled: true } })),
+    // Prerendering only runs for the static export; the normal Lovable/SSR build
+    // uses the custom server entry, which the prerender preview server can't boot.
+    ...(STATIC_EXPORT
+      ? {
+          prerender: { enabled: true, crawlLinks: true },
+          pages: PAGES.map((path) => ({ path, prerender: { enabled: true } })),
+        }
+      : {}),
   },
+
   // Static export skips the Cloudflare/Nitro server bundle entirely.
   ...(STATIC_EXPORT ? { nitro: false as const } : {}),
   ...(BASE_PATH ? { vite: { base: BASE_PATH } } : {}),
