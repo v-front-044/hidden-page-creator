@@ -49,6 +49,10 @@ execFileSync(
     "--bundle",
     "--format=iife",
     "--minify",
+    // import.meta does not exist in a classic script; the value is only used by
+    // Vite's (now unused) chunk-preload helper.
+    '--define:import.meta.url="file:///"',
+    "--define:import.meta.resolve=undefined",
     `--outfile=${bundlePath}`,
   ],
   { stdio: "inherit" },
