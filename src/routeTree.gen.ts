@@ -10,33 +10,115 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRouteImport } from './routes/app'
+import { Route as BonusesRouteImport } from './routes/bonuses'
+import { Route as CasinoRouteImport } from './routes/casino'
+import { Route as CricketBettingRouteImport } from './routes/cricket-betting'
+import { Route as PaymentMethodsRouteImport } from './routes/payment-methods'
+import { Route as RegistrationRouteImport } from './routes/registration'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BonusesRoute = BonusesRouteImport.update({
+  id: '/bonuses',
+  path: '/bonuses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CasinoRoute = CasinoRouteImport.update({
+  id: '/casino',
+  path: '/casino',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CricketBettingRoute = CricketBettingRouteImport.update({
+  id: '/cricket-betting',
+  path: '/cricket-betting',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentMethodsRoute = PaymentMethodsRouteImport.update({
+  id: '/payment-methods',
+  path: '/payment-methods',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegistrationRoute = RegistrationRouteImport.update({
+  id: '/registration',
+  path: '/registration',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRoute
+  '/bonuses': typeof BonusesRoute
+  '/casino': typeof CasinoRoute
+  '/cricket-betting': typeof CricketBettingRoute
+  '/payment-methods': typeof PaymentMethodsRoute
+  '/registration': typeof RegistrationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app': typeof AppRoute
+  '/bonuses': typeof BonusesRoute
+  '/casino': typeof CasinoRoute
+  '/cricket-betting': typeof CricketBettingRoute
+  '/payment-methods': typeof PaymentMethodsRoute
+  '/registration': typeof RegistrationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRoute
+  '/bonuses': typeof BonusesRoute
+  '/casino': typeof CasinoRoute
+  '/cricket-betting': typeof CricketBettingRoute
+  '/payment-methods': typeof PaymentMethodsRoute
+  '/registration': typeof RegistrationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/app'
+    | '/bonuses'
+    | '/casino'
+    | '/cricket-betting'
+    | '/payment-methods'
+    | '/registration'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/app'
+    | '/bonuses'
+    | '/casino'
+    | '/cricket-betting'
+    | '/payment-methods'
+    | '/registration'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/bonuses'
+    | '/casino'
+    | '/cricket-betting'
+    | '/payment-methods'
+    | '/registration'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRoute
+  BonusesRoute: typeof BonusesRoute
+  CasinoRoute: typeof CasinoRoute
+  CricketBettingRoute: typeof CricketBettingRoute
+  PaymentMethodsRoute: typeof PaymentMethodsRoute
+  RegistrationRoute: typeof RegistrationRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +130,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bonuses': {
+      id: '/bonuses'
+      path: '/bonuses'
+      fullPath: '/bonuses'
+      preLoaderRoute: typeof BonusesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/casino': {
+      id: '/casino'
+      path: '/casino'
+      fullPath: '/casino'
+      preLoaderRoute: typeof CasinoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cricket-betting': {
+      id: '/cricket-betting'
+      path: '/cricket-betting'
+      fullPath: '/cricket-betting'
+      preLoaderRoute: typeof CricketBettingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payment-methods': {
+      id: '/payment-methods'
+      path: '/payment-methods'
+      fullPath: '/payment-methods'
+      preLoaderRoute: typeof PaymentMethodsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/registration': {
+      id: '/registration'
+      path: '/registration'
+      fullPath: '/registration'
+      preLoaderRoute: typeof RegistrationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRoute,
+  BonusesRoute: BonusesRoute,
+  CasinoRoute: CasinoRoute,
+  CricketBettingRoute: CricketBettingRoute,
+  PaymentMethodsRoute: PaymentMethodsRoute,
+  RegistrationRoute: RegistrationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

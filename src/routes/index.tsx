@@ -1,24 +1,200 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import {
+  CardGrid,
+  DataTable,
+  Faq,
+  PageHero,
+  PromoBox,
+  Section,
+  Steps,
+} from "../components/site/ui";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+const TITLE = "1win Login – Official Casino and Sports Betting Site in India";
+const DESCRIPTION =
+  "1Win India review: 500% welcome bonus up to 170,000 INR, casino games, cricket betting, mobile app, registration and UPI payments.";
+
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: TITLE },
+      { name: "description", content: DESCRIPTION },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESCRIPTION },
+      { property: "og:url", content: "/" },
+    ],
+    links: [{ rel: "canonical", href: "/" }],
+  }),
+  component: HomePage,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+const GAMES = [
+  "Spaceman",
+  "Pinata Wins",
+  "Fortune Mouse",
+  "Hot Fiesta",
+  "Big Bass Crash",
+  "Fortune Dragon",
+  "Lucky Jet",
+  "Aviator",
+  "Gates of Olympus",
+  "Sweet Bonanza",
+  "JetX",
+  "Plinko",
+];
+
+function HomePage() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <>
+      <PageHero
+        title={TITLE}
+        intro="1Win is an in-demand bookmaker website with a casino among Indian players, offering a variety of sports disciplines and online games. Get 500% on four first deposits up to 170,000 INR and other generous promotions."
+      >
+        <PromoBox />
+      </PageHero>
+
+      <Section title="Popular Games">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+          {GAMES.slice(0, 12).map((game) => (
+            <div key={game} className="surface-card overflow-hidden">
+              <div className="bg-promo flex h-24 items-center justify-center text-xs font-bold uppercase tracking-wide text-foreground">
+                Play now
+              </div>
+              <p className="p-3 text-center text-sm text-foreground">{game}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Information About the 1win Bookmaker">
+        <p>
+          1Win has been in the industry for over 10 years, establishing itself as a
+          reliable betting option for Indian players. The site operates under an
+          international license, ensuring compliance with strict regulatory standards.
+        </p>
+        <p>
+          1Win promotes responsible gambling and provides dedicated resources on this
+          topic. Players can access various tools, including self-exclusion, to manage
+          their betting activities responsibly.
+        </p>
+        <DataTable
+          rows={[
+            ["Company", "MFI Investments Ltd"],
+            ["Year", "2016"],
+            ["Languages", "English, Hindi, +17"],
+            [
+              "Available Categories",
+              "Sports Betting, Slots, Table Games, Live Casino, and others",
+            ],
+            [
+              "Providers",
+              "Evolution Gaming, Pragmatic Play, Spribe, Ezugi, Play'nGO, BGAMING, NetEnt, and +120",
+            ],
+            ["Welcome Bonus", "500% on four first deposits up to 170,000 INR"],
+            [
+              "Payment Methods",
+              "Net Banking, UPI, Paytm, Skrill, Neteller, Cryptocurrency",
+            ],
+            ["Customer Support", "24/7 Live Chat, Email Support, FAQ"],
+            ["Mobile Compatibility", "iOS, Android (mobile app available)"],
+            ["Licensing", "Curacao, № 8048/JAZ 2018-040"],
+            ["Security", "SSL Encryption, Secure Payment Processing"],
+          ]}
+        />
+      </Section>
+
+      <Section title="1win Registration: A Guide for New Players">
+        <p>
+          To join, players must create an account. Below is a short guide on how to
+          register a new profile at the bookmaker.
+        </p>
+        <Steps
+          items={[
+            "Visit the official website and open 1Win via any web browser.",
+            "Click the 'Registration' button in the upper part of the page.",
+            "Fill out the form by phone, email or a social network account.",
+            "Read the terms and regulations and tick the confirmation checkbox.",
+            "Check the entered data and complete the registration procedure.",
+          ]}
+        />
+        <p className="mt-4">
+          A detailed walkthrough with verification tips is available on the{" "}
+          <Link to="/registration" className="text-primary underline">
+            registration page
+          </Link>
+          .
+        </p>
+      </Section>
+
+      <Section title="Sports Betting at 1Win">
+        <p>
+          With a comprehensive sports betting section, 1Win India extends its scope beyond
+          casino offerings. Bettors can find over 20 sports, and an average football match
+          features at least 50 betting markets.
+        </p>
+        <CardGrid
+          items={[
+            {
+              title: "Cricket",
+              text: "IPL, ICC T20 World Cup, NSK Trophy State T20, T10 leagues and women's series.",
+            },
+            {
+              title: "Football",
+              text: "Premier League, La Liga, UEFA Champions League, Europa League and Indian leagues.",
+            },
+            {
+              title: "Tennis",
+              text: "Over 100 matches daily including Australian Open, Wimbledon and Roland Garros.",
+            },
+            {
+              title: "Basketball",
+              text: "NBA, EuroLeague and ABA League with totals and player performance markets.",
+            },
+            {
+              title: "Esports",
+              text: "Dota 2, Counter-Strike 2, VALORANT, League of Legends and 10+ disciplines.",
+            },
+            {
+              title: "Other sports",
+              text: "Baseball, boxing, horse racing, kabaddi, volleyball and table tennis.",
+            },
+          ]}
+        />
+      </Section>
+
+      <Section title="How to Make a 1win Bet?">
+        <Steps
+          items={[
+            "Select the 'Pre-match Betting' or 'Live Betting' tab.",
+            "Decide on the sport and the tournament.",
+            "Check out the list of games and events available for betting.",
+            "Click on the odds to add your selection to the bet slip.",
+            "Enter the stake and confirm with the 'Place Bet' button.",
+          ]}
+        />
+      </Section>
+
+      <Section title="Frequently Asked Questions">
+        <Faq
+          items={[
+            {
+              q: "Is 1Win legal for players from India?",
+              a: "The platform operates under a Curacao license and accepts registrations from India, where online betting on offshore sites is not prohibited at the federal level.",
+            },
+            {
+              q: "What is the minimum deposit?",
+              a: "The minimum deposit starts from 300 INR depending on the selected payment method.",
+            },
+            {
+              q: "Can I use INR as an account currency?",
+              a: "Yes, Indian rupees are supported, so you avoid conversion fees on deposits and withdrawals.",
+            },
+            {
+              q: "How long do withdrawals take?",
+              a: "UPI and Net Banking payouts usually arrive within a few hours, crypto withdrawals are typically faster.",
+            },
+          ]}
+        />
+      </Section>
+    </>
   );
 }
