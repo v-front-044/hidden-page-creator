@@ -1,4 +1,7 @@
 import type { ReactNode } from "react";
+import { useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { toast } from "sonner";
 
 export function Section({
   title,
@@ -45,26 +48,57 @@ export function PageHero({
 
 
 export function PromoBox({ code = "START2WIN" }: { code?: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+    } catch {
+      const el = document.createElement("textarea");
+      el.value = code;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand("copy");
+      el.remove();
+    }
+    setCopied(true);
+    toast.success(`Promo code ${code} copied to clipboard`);
+    window.setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div className="bg-promo surface-card mt-8 max-w-md p-5">
       <p className="text-sm font-bold uppercase tracking-wide text-foreground">
         Get +500% on first deposit
       </p>
-      <div className="mt-4 flex items-center gap-2 rounded-lg bg-background/70 p-2">
-        <span className="flex-1 px-2 font-mono text-sm text-foreground">{code}</span>
-        <span className="rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground">
-          Copy
-        </span>
-      </div>
-      <p className="mt-2 text-xs text-muted-foreground">
-        Copy and use the promo code to get your bonus
-      </p>
       <button
         type="button"
-        className="bg-cta mt-4 w-full rounded-lg px-4 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+        onClick={copy}
+        aria-label={`Copy promo code ${code}`}
+        className="mt-4 flex w-full items-center gap-2 rounded-lg bg-background/70 p-2 text-left transition-colors hover:bg-background"
+      >
+        <span className="flex-1 px-2 font-mono text-sm text-foreground">{code}</span>
+        <span
+          className={`rounded-md px-3 py-1.5 text-xs font-semibold ${
+            copied
+              ? "bg-success text-success-foreground"
+              : "bg-primary text-primary-foreground"
+          }`}
+        >
+          {copied ? "Copied!" : "Copy"}
+        </span>
+      </button>
+      <p className="mt-2 text-xs text-muted-foreground" aria-live="polite">
+        {copied
+          ? "Promo code copied — paste it during registration"
+          : "Click the code to copy and use it to get your bonus"}
+      </p>
+      <Link
+        to="/registration"
+        className="bg-cta mt-4 block w-full rounded-lg px-4 py-3 text-center text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
       >
         Sign Up and Get Bonus Now
-      </button>
+      </Link>
     </div>
   );
 }
