@@ -49,7 +49,6 @@ export default defineConfig({
       ? {
           vite: {
             build: {
-              cssCodeSplit: false,
               // Inline images/fonts as data URIs so nothing has to be fetched.
               assetsInlineLimit: 100 * 1024 * 1024,
             },
