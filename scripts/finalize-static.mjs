@@ -58,13 +58,18 @@ execFileSync(
   { stdio: "inherit" },
 );
 // Everything is in one file now, but Vite's dependency map still lists the
-// original chunk names and would try to preload them. Point those entries at
-// an inert data URL so nothing is requested from disk.
+// original chunk names and would try to preload files that no longer exist.
+// Make that map return nothing.
 {
-  const patched = (await readFile(bundlePath, "utf8")).replace(
-    /"assets\/[^"]+\.(?:js|css)"/g,
-    '"data:text/javascript,"',
+  const raw = await readFile(bundlePath, "utf8");
+  const patched = raw.replace(
+    /(\w+)=\((\w+),\w+=\1,\w+=\w+\.f\|\|\(\w+\.f=\["assets\/[\s\S]*?\]\)\)=>\w+\.map\(\w+=>\w+\[\w+\]\)/,
+    "$1=()=>[]",
   );
+  if (patched === raw) {
+    console.error("Could not neutralise Vite's chunk preload map");
+    process.exit(1);
+  }
   await writeFile(bundlePath, patched);
 }
 
