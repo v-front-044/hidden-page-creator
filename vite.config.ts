@@ -34,12 +34,27 @@ export default defineConfig({
       ? {
           prerender: { enabled: true, crawlLinks: true },
           pages: PAGES.map((path) => ({ path, prerender: { enabled: true } })),
+          // One bundle instead of per-route chunks, so the static build can be
+          // inlined into each HTML file and opened straight from disk (file://).
+          router: { autoCodeSplitting: false },
         }
       : {}),
   },
 
   // Static export skips the Cloudflare/Nitro server bundle entirely.
   ...(STATIC_EXPORT ? { nitro: false as const } : {}),
-  ...(BASE_PATH ? { vite: { base: BASE_PATH } } : {}),
+  ...(BASE_PATH
+    ? { vite: { base: BASE_PATH } }
+    : STATIC_EXPORT
+      ? {
+          vite: {
+            build: {
+              // Inline images/fonts as data URIs so nothing has to be fetched.
+              assetsInlineLimit: 100 * 1024 * 1024,
+            },
+          },
+        }
+      : {}),
 });
+
 
