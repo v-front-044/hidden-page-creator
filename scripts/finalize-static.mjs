@@ -92,6 +92,11 @@ for (const file of pages) {
   await writeFile(file, html);
 }
 
+// Original per-chunk modules are no longer referenced.
+for (const f of await readdir(path.join(out, "assets"))) {
+  if (f.endsWith(".js") && f !== "bundle.js") await rm(path.join(out, "assets", f));
+}
+
 // SPA fallback for deep links / refreshes on unknown paths.
 await writeFile(path.join(out, "404.html"), await readFile(path.join(out, "index.html")));
 
