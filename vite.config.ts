@@ -32,5 +32,5 @@ export default defineConfig({
     },
     pages: PAGES.map((path) => ({ path, prerender: { enabled: true } })),
   },
-  ...(STATIC_EXPORT ? { nitro: { preset: "static" } } : {}),
+  ...(STATIC_EXPORT ? { nitro: false as const } : {}),
 });
