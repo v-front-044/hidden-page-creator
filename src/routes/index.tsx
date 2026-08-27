@@ -8,6 +8,18 @@ import {
   Section,
   Steps,
 } from "../components/site/ui";
+import spaceman from "../assets/games/spaceman.jpg";
+import pinataWins from "../assets/games/pinata-wins.jpg";
+import fortuneMouse from "../assets/games/fortune-mouse.jpg";
+import hotFiesta from "../assets/games/hot-fiesta.jpg";
+import bigBassCrash from "../assets/games/big-bass-crash.jpg";
+import fortuneDragon from "../assets/games/fortune-dragon.jpg";
+import luckyJet from "../assets/games/lucky-jet.jpg";
+import aviator from "../assets/games/aviator.jpg";
+import gatesOfOlympus from "../assets/games/gates-of-olympus.jpg";
+import sweetBonanza from "../assets/games/sweet-bonanza.jpg";
+import jetx from "../assets/games/jetx.jpg";
+import plinko from "../assets/games/plinko.jpg";
 
 const TITLE = "1win Login – Official Casino and Sports Betting Site in India";
 const DESCRIPTION =
@@ -27,19 +39,19 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-const GAMES = [
-  "Spaceman",
-  "Pinata Wins",
-  "Fortune Mouse",
-  "Hot Fiesta",
-  "Big Bass Crash",
-  "Fortune Dragon",
-  "Lucky Jet",
-  "Aviator",
-  "Gates of Olympus",
-  "Sweet Bonanza",
-  "JetX",
-  "Plinko",
+const GAMES: { name: string; img: string }[] = [
+  { name: "Spaceman", img: spaceman },
+  { name: "Pinata Wins", img: pinataWins },
+  { name: "Fortune Mouse", img: fortuneMouse },
+  { name: "Hot Fiesta", img: hotFiesta },
+  { name: "Big Bass Crash", img: bigBassCrash },
+  { name: "Fortune Dragon", img: fortuneDragon },
+  { name: "Lucky Jet", img: luckyJet },
+  { name: "Aviator", img: aviator },
+  { name: "Gates of Olympus", img: gatesOfOlympus },
+  { name: "Sweet Bonanza", img: sweetBonanza },
+  { name: "JetX", img: jetx },
+  { name: "Plinko", img: plinko },
 ];
 
 function HomePage() {
@@ -54,13 +66,27 @@ function HomePage() {
 
       <Section title="Popular Games">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {GAMES.slice(0, 12).map((game) => (
-            <div key={game} className="surface-card overflow-hidden">
-              <div className="bg-promo flex h-24 items-center justify-center text-xs font-bold uppercase tracking-wide text-foreground">
-                Play now
+          {GAMES.map((game) => (
+            <Link
+              key={game.name}
+              to="/casino"
+              className="surface-card group block overflow-hidden transition-transform hover:-translate-y-1"
+            >
+              <div className="relative">
+                <img
+                  src={game.img}
+                  alt={`${game.name} game at 1win casino`}
+                  loading="lazy"
+                  width={512}
+                  height={512}
+                  className="h-28 w-full object-cover"
+                />
+                <span className="absolute inset-0 flex items-center justify-center bg-background/70 text-xs font-bold uppercase tracking-wide text-foreground opacity-0 transition-opacity group-hover:opacity-100">
+                  Play now
+                </span>
               </div>
-              <p className="p-3 text-center text-sm text-foreground">{game}</p>
-            </div>
+              <p className="p-3 text-center text-sm text-foreground">{game.name}</p>
+            </Link>
           ))}
         </div>
       </Section>
