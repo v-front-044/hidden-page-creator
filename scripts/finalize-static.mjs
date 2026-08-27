@@ -74,6 +74,12 @@ for (const file of pages) {
     .replace(/<link[^>]+rel="modulepreload"[^>]*>/g, "")
     .replace(/<script[^>]+src="[^"]*assets\/[^"]+"[^>]*><\/script>/g, "");
 
+  // The router manifest still lists the original module chunks; loading them
+  // is impossible (and unnecessary) once everything ships in one bundle.
+  html = html
+    .replace(/preloads:(\$R\[\d+\]=)?\[[^\]]*\]/g, "preloads:[]")
+    .replace(/scripts:(\$R\[\d+\]=)?\[[^\]]*\]\}/g, "scripts:[]}");
+
   // Local URLs must be relative so they also resolve from disk.
   if (cssName) {
     html = html.replace(
