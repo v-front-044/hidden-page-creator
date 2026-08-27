@@ -17,8 +17,10 @@ const PAGES = [
   "/payment-methods",
 ];
 
-// `STATIC_EXPORT=1 npm run build:static` produces a fully static GitHub Pages build.
+// `npm run build:static` produces a fully static GitHub Pages build (no SSR).
 const STATIC_EXPORT = process.env["STATIC_EXPORT"] === "1";
+// For project pages (https://user.github.io/repo/) set BASE_PATH=/repo/.
+const BASE_PATH = process.env["BASE_PATH"];
 
 export default defineConfig({
   tanstackStart: {
@@ -32,5 +34,8 @@ export default defineConfig({
     },
     pages: PAGES.map((path) => ({ path, prerender: { enabled: true } })),
   },
+  // Static export skips the Cloudflare/Nitro server bundle entirely.
   ...(STATIC_EXPORT ? { nitro: false as const } : {}),
+  ...(BASE_PATH ? { vite: { base: BASE_PATH } } : {}),
 });
+
