@@ -23,8 +23,9 @@ const STATIC_EXPORT = process.env["STATIC_EXPORT"] === "1";
 export default defineConfig({
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-    // nitro/vite builds from this
-    server: { entry: "server" },
+    // nitro/vite builds from this. The static export uses the default entry so the
+    // prerender preview server can boot it.
+    ...(STATIC_EXPORT ? {} : { server: { entry: "server" } }),
     prerender: {
       enabled: true,
       crawlLinks: true,
