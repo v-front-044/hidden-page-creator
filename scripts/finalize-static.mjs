@@ -57,6 +57,17 @@ execFileSync(
   ],
   { stdio: "inherit" },
 );
+// Everything is in one file now, but Vite's dependency map still lists the
+// original chunk names and would try to preload them. Point those entries at
+// an inert data URL so nothing is requested from disk.
+{
+  const patched = (await readFile(bundlePath, "utf8")).replace(
+    /"assets\/[^"]+\.(?:js|css)"/g,
+    '"data:text/javascript,"',
+  );
+  await writeFile(bundlePath, patched);
+}
+
 // The bundle stays an external classic script: browsers block ES modules over
 // file://, but plain scripts and stylesheets load fine from disk.
 const cssName = indexHtml.match(/href="[^"]*?(assets\/styles-[^"]+\.css)"/)?.[1];
