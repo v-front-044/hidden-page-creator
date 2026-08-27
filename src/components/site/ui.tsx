@@ -30,16 +30,19 @@ export function PageHero({
 }) {
   return (
     <header className="bg-hero border-b border-border">
-      <div className="container-site py-12 md:py-16">
-        <h1 className="max-w-3xl text-3xl leading-tight md:text-5xl">{title}</h1>
-        <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted-foreground">
-          {intro}
-        </p>
-        {children}
+      <div className="container-site grid gap-8 py-12 md:py-16 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+        <div>
+          <h1 className="text-3xl leading-tight md:text-5xl">{title}</h1>
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
+            {intro}
+          </p>
+        </div>
+        {children ? <div className="lg:justify-self-end">{children}</div> : null}
       </div>
     </header>
   );
 }
+
 
 export function PromoBox({ code = "START2WIN" }: { code?: string }) {
   return (
