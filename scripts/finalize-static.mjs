@@ -70,7 +70,12 @@ execFileSync(
     console.error("Could not neutralise Vite's chunk preload map");
     process.exit(1);
   }
-  await writeFile(bundlePath, patched);
+  // The route manifest also points at the stylesheet with an absolute URL,
+  // which does not exist on disk; the HTML already links it relatively.
+  await writeFile(
+    bundlePath,
+    patched.replace(/"\/?assets\/[^"]+\.css"/g, '"data:text/css,"'),
+  );
 }
 
 // The bundle stays an external classic script: browsers block ES modules over
