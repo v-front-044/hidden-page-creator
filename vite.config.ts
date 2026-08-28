@@ -24,12 +24,8 @@ const BASE_PATH = process.env["BASE_PATH"];
 
 export default defineConfig({
   tanstackStart: {
-    // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
-    // nitro/vite builds from this. The static export uses the default entry so the
-    // prerender preview server can boot it.
-    ...(STATIC_EXPORT ? {} : { server: { entry: "server" } }),
     // Prerendering only runs for the static export; the normal Lovable/SSR build
-    // uses the custom server entry, which the prerender preview server can't boot.
+    // uses TanStack Start's standard server entry for reliable Worker bundling.
     ...(STATIC_EXPORT
       ? {
           prerender: { enabled: true, crawlLinks: true },

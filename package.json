@@ -5,13 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "STATIC_EXPORT=1 vite build && node scripts/finalize-static.mjs",
+    "build": "vite build",
     "build:ssr": "vite build",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "build:static": "npm run build"
+    "build:static": "STATIC_EXPORT=1 vite build && node scripts/finalize-static.mjs"
   },
   "overrides": {
     "rolldown": "1.2.1"
